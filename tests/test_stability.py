@@ -5,7 +5,7 @@ import os
 import tempfile
 import pytest
 from unittest.mock import patch, MagicMock
-from silero_tts.silero_tts import SileroTTS
+from stts.silero_tts import SileroTTS
 
 
 def test_silero_tts_initialization():

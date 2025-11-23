@@ -2,7 +2,7 @@
 
 import os
 import pytest
-from silero_tts.silero_tts import SileroTTS
+from stts.silero_tts import SileroTTS
 
 
 # conftest.py

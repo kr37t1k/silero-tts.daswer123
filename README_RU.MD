@@ -85,7 +85,7 @@ python -m silero_tts [параметры]
 Вы также можете интегрировать Silero TTS в свои собственные проекты на Python, импортируя класс `SileroTTS` и используя его методы.
 
 ```python
-from silero_tts.silero_tts import SileroTTS
+from stts.silero_tts import SileroTTS
 
 # Get available models
 models = SileroTTS.get_available_models()
