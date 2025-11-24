@@ -1,17 +1,15 @@
 # test_silero_tts.py
 
 import os
+import shutil
+import subprocess
+import sys
+
 import pytest
+
 from stts.silero_tts import SileroTTS
 
-
 # conftest.py
-
-import os
-import sys
-import shutil
-import pytest
-import subprocess
 
 # Путь к временной папке для тестов
 tests_temp_path = os.path.abspath("tests/tests_temp")
@@ -35,7 +33,7 @@ def install_silero_tts():
 @pytest.fixture(scope="session", autouse=True)
 def test_env():
     create_test_env()
-    install_stts()
+    # install_stts()
 
     # Добавляем путь к виртуальному окружению в sys.path
     sys.path.insert(0, os.path.join(venv_path, "lib", "python3.x", "site-packages"))

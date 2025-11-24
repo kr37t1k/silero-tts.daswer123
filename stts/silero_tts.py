@@ -5,6 +5,8 @@ import torch
 import wave
 import yaml
 import requests
+import sounddevice as sd
+import soundfile as sf
 from loguru import logger
 from datetime import datetime, timedelta
 from number2text.number2text import NumberToText
@@ -155,7 +157,7 @@ class SileroTTS:
                 raise ValueError(f"Speaker '{self.speaker}' is not supported for model '{self.model_id}'. Supported speakers: {self.tts_model.speakers}")
         else:
             # For models without a speakers attribute, we can't validate the speaker
-            # but we'll allow it to proceed with the assumption that the model supports the requested speaker
+            # But we'll allow it to proceed with the assumption that the model supports the requested speaker
             logger.info(f"Model '{self.model_id}' doesn't expose speakers list, proceeding with speaker '{self.speaker}'")
 
     
@@ -252,7 +254,6 @@ class SileroTTS:
         Initialize the TTS model with proper error handling and resource management.
         """
         logger.info(f"Initializing model '{self.model_id}' for language '{self.language}'")
-        t0 = timeit.default_timer()
 
         # Set device properly
         if not torch.cuda.is_available() and self.device == "auto":
@@ -352,6 +353,7 @@ class SileroTTS:
                     model.speakers = ['random']  # fallback for other languages
 
         return model
+    @staticmethod
 
     def find_char_positions(self, string: str, char: str) -> list:
         pos = []  # list to store positions for each 'char' in 'string'
@@ -360,6 +362,7 @@ class SileroTTS:
                 pos.append(n)
         return pos
 
+    @staticmethod
     def find_max_char_position(self, positions: list, limit: int) -> int:
         max_position = 0
         for pos in positions:
@@ -369,6 +372,7 @@ class SileroTTS:
                 break
         return max_position
 
+    @staticmethod
     def find_split_position(self, line: str, old_position: int, char: str, limit: int) -> int:
         positions = self.find_char_positions(line, char)
         new_position = self.find_max_char_position(positions, limit)
@@ -420,13 +424,12 @@ class SileroTTS:
             lang = self.language
         if lang == 'ru':
             try:
-                import re
                 digits = re.findall(r'\d+', line)
                 # Sort digits from largest to smallest
                 digits = sorted(digits, key=len, reverse=True)
                 for digit in digits:
                      # Limit to 12 digits for num2t4ru
-                     line = line.replace(digit, self.converter.convert(int(digit[:12])), 1) # Replace one at a time to avoid overlap issues
+                     line = line.replace(str(digit), self.converter.convert(int(digit[:12])), 1) # Replace one at a time to avoid overlap issues
             except (ValueError, IndexError):
                 logger.warning(f"Warning: Could not convert digit '{digit[:12]}' to text, leaving as-is.")
                 # If num2t4ru fails, leave the digit as is
@@ -616,12 +619,16 @@ class SileroTTS:
         # Close the final wave file
         wf.close()
         logger.success(f'Speech saved to {output_filename}')
+        sf_file, sf_samplerate = sf.read(output_filename)
+        sd.play(data=sf_file, samplerate=self.sample_rate, blocking=True)
+        sd.wait()
+        print(f"Wave export file playing: {output_filename}...")
 
     def init_wave_file(self, path):
         logger.info(f'Initializing wave file: {path}')
         wf = wave.open(path, 'wb')
-        wf.setnchannels(self.wave_channels)
-        wf.setsampwidth(self.wave_sample_width)
+        wf.setnchannels(1) #(self.wave_channels)
+        wf.setsampwidth(2) #(self.wave_sample_width)
         wf.setframerate(self.sample_rate)
         return wf
 
@@ -635,6 +642,9 @@ class SileroTTS:
             self.run_time = "0:00:00"
             self.run_time_est = "0:00:00"
             self.wave_data_current = 0
+            self.sample_rate = 48000 #for default
+            self.wave_channels = 1
+            self.wave_sample_width = 2
             self.wave_data_total = 0
             self.wave_mib = 0
             self.wave_mib_est = 0
