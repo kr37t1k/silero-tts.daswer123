@@ -2,8 +2,8 @@
 
 **README is available in the following languages:**
 
-[![EN](https://img.shields.io/badge/EN-blue.svg)](https://github.com/kr37t1k/silero-tts.daswer123)
-[![RU](https://img.shields.io/badge/RU-red.svg)](https://github.com/kr37t1k/silero-tts.daswer/blob/main/README_RU.MD)
+[![EN](https://img.shields.io/badge/EN-blue.svg)](https://github.com/kr37t1k/stts-python)
+[![RU](https://img.shields.io/badge/RU-red.svg)](https://github.com/kr37t1k/stts-python/blob/main/README_RU.MD)
 
 Silero TTS is a Python library that provides an easy way to synthesize speech from text using various Silero TTS models, languages, and speakers. It can be used as a standalone script or integrated into your own Python projects.
 
@@ -32,7 +32,7 @@ Silero TTS is a Python library that provides an easy way to synthesize speech fr
 
 1. Clone the repository:
    ```
-   git clone https://github.com/kr37t1k/silero-tts.daswer123
+   git clone https://github.com/kr37t1k/stts-python
    ```
 
 2. Install the required dependencies:
@@ -171,7 +171,7 @@ The Silero TTS CLI provides the following features:
 - Indic (indic)
 - Cyrillic (cyrillic)
 
-## Stability Features (v0.1)
+## Stability Features (v0.6)
 
 - Input validation for all parameters
 - Network resilience with retry mechanisms and timeouts
@@ -187,5 +187,5 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Acknowledgements
 
-- [Silero Models](https://github.com/snakers4/silero-models) for providing the TTS models
-- [silero_tts_standalone](https://github.com/S-trace/silero_tts_standalone) this library inspired me to create this project.
+- [Silero Models](https://github.com/snakers4/silero-models) big thanks for providing the free TTS models
+- [silero_tts_standalone](https://github.com/S-trace/silero_tts_standalone) this library inspired daswer123 to create his (daswer123/silero-tts-enhanced) project. I made fork from his project and remade it for my own mind, wow its working, huh👽🪰!
